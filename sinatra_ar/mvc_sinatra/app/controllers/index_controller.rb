@@ -39,18 +39,24 @@ def get_message(birth_path_num)
     message = "<p>Your numerology number is #{birth_path_num}.\nThis is the teacher. Number Nine is a tolerant, somewhat impractical, and sympathetic vibration. Ruled by Mars."
   else
     message = "<p>Uh oh! Your birth path number is not 1-9!"
+  end
 end
-end
+
 
 def valid_birthdate(input)
   if(input.length == 8 && !input.match(/^[0-9]+[0-9]$/).nil?)
     return true
   else
     return false
- end
+  end
 end
 
+
 get '/' do
+  erb :form
+end
+
+get '/:birthdate' do
   erb :form
 end
 
@@ -70,3 +76,11 @@ post '/' do
       erb :form
     end
 end
+
+
+
+
+
+
+
+
