@@ -57,7 +57,10 @@ get '/' do
 end
 
 get '/:birthdate' do
-  erb :form
+  birthdate = params[:birthdate].to_i
+  birth_path_num = get_birth_path_num(birthdate)
+  @message = get_message(birth_path_num)
+  erb :index
 end
 
 get '/message/:birth_path_num' do
