@@ -1,6 +1,7 @@
 require 'sinatra'
 
 def get_birth_path_num(birthdate)
+  birthdate = birthdate.to_s
   number = birthdate[0].to_i + birthdate[1].to_i +
   + birthdate[2].to_i + birthdate[3].to_i +
   + birthdate[4].to_i + birthdate[5].to_i +
