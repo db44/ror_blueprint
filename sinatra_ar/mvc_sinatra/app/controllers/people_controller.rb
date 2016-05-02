@@ -23,15 +23,21 @@ redirect "/people/#{person.id}"
 end  
 
 get '/people/:id/edit' do
-  @person = Person.find(params:[:id])
+  @person = Person.find(params[:id])
   erb :'/people/edit'
 end
 
-post '/people/:id/edit' do
+post '/people/:id' do
 # get the record and update the first_name and last_name here...
-  person.birthdate = params[:birthdate]
-  person.save
-  redirect "/people/#{person.id}"
+  @person = Person.find(params[:id])
+  person = Person.update(first_name: params[:first_name], last_name: params[:last_name], birthdate: params[:birthdate])
+  #person.first_name = params[:first_name]
+  #person.save
+  #person.last_name = params[:last_name]
+  #person.save
+  #person.birthdate = params[:birthdate]
+  #person.save
+  #redirect "/people/#{person.id}"
 end
 
 get '/people/:id' do
