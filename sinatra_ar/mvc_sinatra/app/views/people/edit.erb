@@ -1,14 +1,2 @@
-<form action="<%= "/people/#{@person.id}" %>" method="post">
-  <input type="hidden" name="_method" value="put" />
-
-  <label for="first_name">First Name:</label>
-  <input type="text" name="first_name" value="<%= @person.first_name %>" />
-
-  <label for="last_name">Last Name:</label>
-  <input type="text" name="last_name" value="<%= @person.last_name %>"/>
-
-  <label for="birthdate">Birthdate:</label>
-  <input name="birthdate" type="date" value="<%= @person.birthdate %>"/>
-
-  <input type="submit" />
-</form>  
+<h1>Edit a Person</h1>
+<%= erb :"/people/_form" %>

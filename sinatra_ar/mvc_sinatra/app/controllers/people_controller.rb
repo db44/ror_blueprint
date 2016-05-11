@@ -1,15 +1,19 @@
-require 'sinatra'
+#CRUD = Create, Read, Update, Delete methods and routes.
+#a PUT route is for UPDATING/EDITING a record; a POST route is for CREATING a new record.
 
+#READ all people
 get '/people' do
 	@people = Person.all
   erb :"/people/index"
 end
 
-get '/people/new' do
+#CREATE a person
+get '/people/new' do  
   @person = Person.new	
   erb :"/people/new"
 end	
 
+#CREATE a person
 post '/people' do
   if params[:birthdate].include?("-")
     birthdate = params[:birthdate]
@@ -17,22 +21,38 @@ post '/people' do
     birthdate = Date.strptime(params[:birthdate], "%m%d%Y")
   end
 
-person = Person.create(first_name: params[:first_name], last_name: params[:last_name], birthdate: params[:birthdate])
-redirect "/people/#{person.id}"
-#erb :"/people/new"
+  @person = Person.new(first_name: params[:first_name], last_name: params[:last_name], birthdate: params[:birthdate])
+  if @person.valid?
+     @person.save
+    redirect "/people/#{@person.id}"
+  else
+    @person.errors.full_messages.each do |message|
+      @errors = "#{@errors} #{message}."
+  end
+  erb :"/people/new"
+  end
 end  
 
+#UPDATE/EDIT a person
 get '/people/:id/edit' do
   @person = Person.find(params[:id])
   erb :'/people/edit'
 end
 
+#UPDATE/EDIT a person
 put '/people/:id' do
-#put "/people/#{person.id}" do
-# get the record and update the first_name and last_name here...
-  @person = params[:id]
+# get the record (create a variable using an instance variable. Use the find method on the class.)
+  @person = Person.find(params[:id])
+# update the first_name, last_name, and birthdate of anyone in the ActiveRecord database  
   @person.update(first_name: params[:first_name], last_name: params[:last_name], birthdate: params[:birthdate])
-  redirect "/people/#{person.id}"
+  redirect "/people/#{@person.id}"
+end
+
+#DELETE a person
+delete '/people/:id' do
+  @person = Person.find(params[:id])
+  @person.delete
+  redirect "/people"
 end
 
 get '/people/:id' do
