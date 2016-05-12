@@ -1,6 +1,7 @@
 class Person < ActiveRecord::Base
 
-validates_presence_of :birthdate, :first_name, :last_name  
+validates_presence_of :birthdate, :first_name, :last_name 
+
 
   def self.get_birth_path_num(birthdate)
     birthdate = birthdate.to_s

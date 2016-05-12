@@ -21,22 +21,22 @@ post '/people' do
     birthdate = Date.strptime(params[:birthdate], "%m%d%Y")
   end
 
-  @person = Person.new(first_name: params[:first_name], last_name: params[:last_name], birthdate: params[:birthdate])
+  @person = Person.create(first_name: params[:first_name], last_name: params[:last_name], birthdate: params[:birthdate])
   if @person.valid?
      @person.save
     redirect "/people/#{@person.id}"
   else
-    @person.errors.full_messages.each do |message|
-      @errors = "#{@errors} #{message}."
-  end
-  erb :"/people/new"
+    @person.errors.full_messages.each do |msg|
+     @errors = "#{@errors} #{msg}."
+    end
+    erb :"/people/new"
   end
 end  
 
 #UPDATE/EDIT a person
 get '/people/:id/edit' do
   @person = Person.find(params[:id])
-  erb :'/people/edit'
+  erb :"/people/edit"
 end
 
 #UPDATE/EDIT a person
@@ -45,7 +45,15 @@ put '/people/:id' do
   @person = Person.find(params[:id])
 # update the first_name, last_name, and birthdate of anyone in the ActiveRecord database  
   @person.update(first_name: params[:first_name], last_name: params[:last_name], birthdate: params[:birthdate])
-  redirect "/people/#{@person.id}"
+  if @person.valid?
+    @person.save
+    redirect "/people/#{@person.id}"
+  else
+    @person.errors.full_messages.each do |msg|
+      @errors = "#{@errors} #{msg}."
+    end
+    erb :"/people/edit"    
+  end
 end
 
 #DELETE a person
